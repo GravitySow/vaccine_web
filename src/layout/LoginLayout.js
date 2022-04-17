@@ -21,13 +21,14 @@ export class LoginLayout extends React.Component {
                     <li></li>
                 </ul>
                 <div className={classes.container}>
+                    <Outlet />
+                </div>
+                {/* <div className={classes.container}>
                     
                     <div className={classes.content}>
-                        {/* <main>{this.props.children}</main> */}
                         <Outlet />
                     </div>
-                </div>
-                {/* <Outlet /> */}
+                </div> */}
             </div>
         )
     }
@@ -35,10 +36,10 @@ export class LoginLayout extends React.Component {
 
 const useStyles = (theme) => ({ 
     container: {   
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'flex-end',
+        // width: '100vw',
+        // height: '100vh',
+        // display: 'flex',
+        // justifyContent: 'flex-end',
         zIndex: '2',
     },
 

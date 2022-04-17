@@ -12,6 +12,7 @@ import LoginPage from './pages/admin/login/LoginPage.js'
 import HomePage from './pages/admin/home/HomePage.js'
 import DashboardPage from './pages/admin/dashboard/DashboardPage'
 import RegisterPage from './pages/users/register/RegisterPage'
+import VaccineLayout from './layout/VaccineLayout'
 function App() {
   return (
     <div className="App">
@@ -24,6 +25,10 @@ function App() {
           <Route element={<LoginLayout /> }>
             <Route path="" element={<LoginUserPage />} />
             <Route path="register" element={<RegisterPage />} />
+          </Route>
+
+          <Route path="test" element={<VaccineLayout /> }>
+            {/* <Route path="test" element={<LoginUserPage />} /> */}
           </Route>
 
           <Route path="staff">
