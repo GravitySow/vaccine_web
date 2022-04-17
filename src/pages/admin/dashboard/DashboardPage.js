@@ -85,6 +85,7 @@ function DashboardPage() {
   const [UserList, setUserList] = useState([]);
   const [query, setQuery] = useState("");
   const [RowData, setRowData] = useState([]);
+  const [RowData2, setRowData2] = useState([]);
   const [newStatus, setNewStatus] = useState("");
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem('hospitalID'));
@@ -131,13 +132,15 @@ function DashboardPage() {
   // };
 
   const UserRead = () => {
-    Axios.post("http://localhost:8080/staff/getvaccinereserve", {
+    Axios.post("http://gravitys.ddns.net:8081/staff/getvaccinereserve", {
       hospitalId: 1
     }).then((response) => {
       console.log(response)
-      setUserList(response);
+      setUserList(response.data);
     });
   }
+
+
 
   const Detail = (ID) => {
     window.location = "/Detail/" + ID;
@@ -148,14 +151,6 @@ function DashboardPage() {
     window.location = "/";
   }
 
-  const search = (UserList) => {
-    return UserList.filter(
-      (UserList) =>
-        UserList.data.id.toLowerCase().includes(query) ||
-        UserList.data.users.firstname.toLowerCase().includes(query) ||
-        UserList.data.users.surname.toLowerCase().includes(query)
-    );
-  };
   return (
     <div>
       <div className="Navbar">
@@ -166,14 +161,6 @@ function DashboardPage() {
         <h1>รายชื่อผู้เข้ารับวัคซีน</h1>
       </div>
       <br></br>
-      <form className="search">
-        <h6 className="textsearch">ค้นหา: </h6>
-        <input
-          type="text"
-          className="searchData"
-          onChange={(e) => setQuery(e.target.value)}
-        ></input>
-      </form>
       <br></br>
       <br></br>
       <Container maxWidth="" sx={{ p: 29 }}>
@@ -206,39 +193,40 @@ function DashboardPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {search(UserList).map((row) => (
-                  <StyledTableRow key={row.IDห}>
+                {UserList.map((row) => (
+                  <StyledTableRow key={row.id}>
                     <StyledTableCell
                       align="center"
                       style={{
                         color:
-                          (row.GotVaccine === "ได้รับวัคซีนแล้ว" &&
+                          (row.status === "ได้รับวัคซีนแล้ว" &&
                             "#09CF9E") ||
-                          (row.GotVaccine === "ยังไม่ได้รับวัคซีน" &&
+                          (row.status === "ยังไม่ได้รับวัคซีน" &&
                             "#E8302A"),
                       }}
                     >
-                      {row.GotVaccine}
+                      {row.status}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{row.Date}</StyledTableCell>
+                    <StyledTableCell align="center">{row.date}</StyledTableCell>
                     <StyledTableCell component="th" scope="row">
-                      {row.Name} {row.Surname}
+                      {row.users.firstname} {row.users.surname}
                     </StyledTableCell>
 
                     <StyledTableCell align="left">
-                      {row.ID_Card}
+                      {row.users.idCardNO}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.VaccineName}
+                      {row.vaccine.name}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.Hospital_Name}
+                      {row.hospitalId}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <button
                         className="btndetail"
                         onClick={() => {
-                          handleClickOpen(setRowData(row));
+                          handleClickOpen(setRowData(row.users)); 
+                          handleClickOpen(setRowData2(row.vaccine));
                         }}
                       >
                         รายละเอียด
@@ -269,26 +257,26 @@ function DashboardPage() {
               <div className="form-Name">
                 <form>
                   <lable>
-                    <b>ชื่อ-นามสกุล</b> &nbsp; &nbsp; &nbsp;{RowData.Name} {RowData.Surname}
+                    <b>ชื่อ-นามสกุล</b> &nbsp; &nbsp; &nbsp;{RowData.firstname} {RowData.surname}
                   </lable>
                 </form>
                 <br></br>
                 <form>
                   <lable>
-                    <b>เพศ</b> &nbsp; &nbsp; &nbsp;{RowData.sex}
+                    <b>เพศ</b> &nbsp; &nbsp; &nbsp;{RowData.gender}
                   </lable>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                   <lable>
-                    <b>วัน/เดือน/ปีเกิด</b> {RowData.BirthDay}
+                    <b>วัน/เดือน/ปีเกิด</b> {RowData.birthday}
                   </lable>
                 </form>
                 <br></br>
                 <form>
                   <lable>
-                    <b>หมายเลขบัตรประชาชน</b> &nbsp; &nbsp; &nbsp;{RowData.ID_Card}
+                    <b>หมายเลขบัตรประชาชน</b> &nbsp; &nbsp; {RowData.idCardNO}
                   </lable>
-                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  &nbsp; &nbsp; &nbsp; &nbsp; 
                   <lable>
-                    <b>เบอร์โทรศัพท์</b> &nbsp; &nbsp; &nbsp;{RowData.Telephone}
+                    <b>เบอร์โทรศัพท์</b> &nbsp; &nbsp; {RowData.tel}
                   </lable>
                 </form>
                 <br></br>
@@ -313,17 +301,17 @@ function DashboardPage() {
             <br></br>
             <form>
               <lable>
-                <b>ชื่อวัคซีน</b> &nbsp; &nbsp; &nbsp;{RowData.VaccineName}
+                <b>ชื่อวัคซีน</b> &nbsp; &nbsp; &nbsp;{RowData2.name}
               </lable>
               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
               <lable>
-                <b>เข็มที่</b> &nbsp; &nbsp; &nbsp;{RowData.DoseNumber}
+                <b>เข็มที่</b> &nbsp; &nbsp; &nbsp;{RowData2.DoseNumber}
               </lable>
             </form>
             <br></br>
             <form>
               <lable>
-                <b>โรงพยาบาล</b>&nbsp; &nbsp; &nbsp; {RowData.Hospital_Name}
+                <b>โรงพยาบาล</b>&nbsp; &nbsp; &nbsp; {RowData2.hospitalId}
               </lable>
             </form>
           </DialogContent>
@@ -332,7 +320,7 @@ function DashboardPage() {
             style={{fontFamily: 'Prompt, sans-serif',}}
               autoFocus
               onClick={() => {
-                handleUpDate(RowData.ID);
+                handleUpDate(RowData.id);
               } 
             }
             >

@@ -8,7 +8,7 @@
 }
 .btnLogout {
   position: absolute;
-  margin-left: 93%;
+  margin-left: 45%;
   border: none;
   background-color: inherit;
   padding: 0.83rem 0.7rem;
@@ -85,25 +85,5 @@ margin-top: 20%;
 font-family: 'Prompt', sans-serif;
 }
 
-.searchData{
-  position: absolute;
-  width: 389px;
-  height: 24px;
-  margin-left: 20rem;
-  margin-top: 12rem;
-  font-family: 'Prompt', sans-serif;
-}
-.textsearch{
-  position:absolute;
-  color: black;
-  margin-left: 16rem;
-  margin-top: 12rem;
-  font-family: 'Prompt', sans-serif;
 
-}
 
-.search{
-  position: absolute;
-  margin-left: -14.4rem;
-  font-family: 'Prompt', sans-serif;
-}
