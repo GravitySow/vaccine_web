@@ -28,7 +28,7 @@ function App() {
           </Route>
 
           <Route path="test" element={<VaccineLayout /> }>
-            {/* <Route path="test" element={<LoginUserPage />} /> */}
+            <Route path="test" element={<LoginUserPage />} />
           </Route>
 
           <Route path="staff">

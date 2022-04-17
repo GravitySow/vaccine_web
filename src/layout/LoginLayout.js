@@ -6,7 +6,7 @@ export class LoginLayout extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-            <div>
+            <div className={classes.main}>
                 <ul className={classes.circles}>
                     <li></li>
                     <li></li>
@@ -35,6 +35,10 @@ export class LoginLayout extends React.Component {
 }
 
 const useStyles = (theme) => ({ 
+    main: {
+        // position: 'fixed',
+    },
+
     container: {   
         // width: '100vw',
         // height: '100vh',
@@ -57,9 +61,10 @@ const useStyles = (theme) => ({
         width: '100vw'
     },
     circles:{
+        position: 'fixed',
         width: '100vw',
         height: '100vh',
-        position: 'absolute',
+        // position: 'absolute',
         zIndex: '1',
         overflow: 'hidden',
         '& li':{

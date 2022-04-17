@@ -30,6 +30,6 @@ const useStyles = (theme) => ({
         display: 'flex',
         justifyContent: 'center',
         zIndex: '2',
-    }
+    },
 })
 export default withStyles(useStyles)(Vaccinelayout);
