@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../../../assets/icon/logo.svg'
+import userService from '../../../service/userService';
 
 const LoginPage  = () => {
     const classes = useStyles();
-
+    const [idcardno, setIdcardno] = useState("");
+    const [password, setPassword] = useState("");
     return (
         <div>
             <div className={classes.container}>
@@ -14,20 +16,38 @@ const LoginPage  = () => {
                     <div className={classes.logo}>
                         <img src={logo} height="75vh"/>
                     </div>
-                    <TextField type="username" id="standard-basic" label="รหัสบัตรประชาชน" style={{width: '23vw'}}/> <br/>
-                    <TextField type="password" id="standard-basic" label="Password" style={{width: '23vw', marginTop: '30px'}}/><br/>
-                    <div style={{marginTop: '30px', display: 'flex', justifyContent: 'space-between'}}>
-                        <div className={classes.buttonForget} style={{marginRight: '4vw'}}>
-                            ลงทะเบียนเพื่อจองวัคซีน
+                    <form onSubmit={onSubmit}>
+                        <TextField type="idcardno" id="standard-basic" label="รหัสบัตรประชาชน" onChange={(e) => {setIdcardno(e.target.value);}} style={{width: '23vw'}}/> <br/>
+                        <TextField type="password" id="standard-basic" label="Password" onChange={(e) => {setPassword(e.target.value);}} style={{width: '23vw', marginTop: '30px'}}/><br/>
+                        <div style={{marginTop: '30px', display: 'flex', justifyContent: 'space-between'}}>
+                            <div className={classes.buttonRegister} style={{marginRight: '4vw'}} onClick={register}>
+                                ลงทะเบียนเพื่อจองวัคซีน
+                            </div>
+                            <button type="submit" className={classes.buttonSignin} onClick={onSubmit}>
+                                เข้าสู่ระบบ
+                            </button>
                         </div>
-                        <div className={classes.buttonSignin}>
-                            เข้าสู่ระบบ
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     )
+
+    function register(){
+        window.location = "/register";
+    }
+    async function onSubmit(event){
+        event.preventDefault();
+        let data = {
+            idcardno: idcardno,
+            password: password
+        }
+        const response = await userService.login(data)
+        console.log(response);
+        if(response.data.status == true){
+            window.location = "/dashboard";
+        }
+    }
 }
 
 const useStyles = makeStyles({
@@ -37,7 +57,7 @@ const useStyles = makeStyles({
         marginBottom: '3vh',
         marginLeft: '-3vw',
     },
-    buttonForget:{
+    buttonRegister:{
         cursor: 'pointer',
         fontFamily: 'Kanit',
         fontStyle: 'normal',
@@ -60,7 +80,8 @@ const useStyles = makeStyles({
         fontSize: '14px',
         lineHeight: '21px',
         color: 'white',
-        
+        borderStyle: 'unset',   
+    
         '&:hover': {
             background: '#211e9c',
         }
@@ -80,6 +101,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        zIndex: '3'
     },
 });
 

@@ -13,6 +13,8 @@ import HomePage from './pages/admin/home/HomePage.js'
 import DashboardPage from './pages/admin/dashboard/DashboardPage'
 import RegisterPage from './pages/users/register/RegisterPage'
 import VaccineLayout from './layout/VaccineLayout'
+import DashboardUserPage from './pages/users/dashboard/DashboardPage'
+
 function App() {
   return (
     <div className="App">
@@ -27,7 +29,8 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
           </Route>
 
-          <Route path="test" element={<VaccineLayout /> }>
+          <Route path="" element={<VaccineLayout /> }>
+          <Route path="dashboard" element={<DashboardUserPage />} />
             <Route path="test" element={<LoginUserPage />} />
           </Route>
 

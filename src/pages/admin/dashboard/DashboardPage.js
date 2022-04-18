@@ -148,7 +148,7 @@ function DashboardPage() {
 
   const Log_Out = () => {
     localStorage.clear();
-    window.location = "/";
+    window.location = "/staff";
   }
 
   return (

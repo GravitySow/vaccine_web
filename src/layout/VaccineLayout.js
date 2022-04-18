@@ -8,14 +8,17 @@ export class Vaccinelayout extends React.Component {
         return (
             <div className={classes.container}>
                 <div className={classes.logo}>
-                    <img src={logo} height="75vh"/>
+                    <img src={logo} height="75vh" onClick={clickLogo}/>
                 </div>
                 <Outlet />
             </div>
         )
+        function clickLogo(){
+            window.location = "/";
+        }
     }
+    
 }
-
 const useStyles = (theme) => ({
     container: {   
         width: '100vw',
@@ -30,6 +33,7 @@ const useStyles = (theme) => ({
         display: 'flex',
         justifyContent: 'center',
         zIndex: '2',
+        cursor: 'pointer',
     },
 })
 export default withStyles(useStyles)(Vaccinelayout);

@@ -19,7 +19,7 @@ function LoginPage() {
   const [loginStatus, setloginstatus] = useState("");
 
   const handleSubmit = (e) => {
-    Axios.post("http://localhost:8080/staff/login", {
+    Axios.post("http://gravitys.ddns.net:8081/staff/login", {
       username: Hospital_ID,
       password: Password,
     }).then((response) => {
@@ -28,7 +28,7 @@ function LoginPage() {
         setloginstatus("Username or Password worng");
       } else {
         console.log('Suscess:',response.data[0]);
-        window.location = '/dashboard'
+        window.location = '/staff/dashboard'
       }
     });
   };
