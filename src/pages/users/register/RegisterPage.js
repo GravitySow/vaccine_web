@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import logo from '../../../assets/icon/logo.svg';
 import {Container, Row, Col} from 'react-bootstrap';
@@ -7,12 +7,32 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import thLocale from 'date-fns/locale/th';
+import userService from '../../../service/userService';
 const RegisterPage = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
   const [locale, setLocale] = React.useState('th');
   const localeMap = {
     th: thLocale,
+  };
+  const [data, setData] = useState({
+    firstname: "",
+    surname: "",
+    idcardno: "",
+    birthday: "",
+    gender: "",
+    email: "",
+    address: "",
+    tel: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setData(prevState => ({
+        ...prevState,
+        [name]: value
+    }));
   };
   return (
     <div className={classes.container}>
@@ -21,17 +41,17 @@ const RegisterPage = () => {
       </div>
       <div className={classes.mainbox}>
         <Container fluid className={classes.text}>
-          <from>
+          <form onSubmit={onSubmit}>
             <Row>
               <Col className={classes.box}>*ชื่อ/Name</Col>
               <Col className={classes.box}>*นามสกุล/Surname</Col>
             </Row>
             <Row>
               <Col className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="firstname"></input>
               </Col>
               <Col className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="surname"></input>
               </Col>
             </Row>
             <Row>
@@ -39,7 +59,7 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col md={6} className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="idcardno"></input>
               </Col>
             </Row>
             <Row>
@@ -48,10 +68,10 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="password"></input>
               </Col>
               <Col className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="confirmPassword"></input>
               </Col>
             </Row>
             <Row>
@@ -67,9 +87,8 @@ const RegisterPage = () => {
                     label="Custom input"
                     mask="__/__/____"
                     value={value}
-                    onChange={(newValue) => {
-                      setValue(newValue);
-                    }}
+                    
+                    onChange={setBirthday}
                     renderInput={({inputRef, inputProps, InputProps}) => (
                       <Box sx={{display: 'flex', alignItems: 'center'}}>
                         <input
@@ -89,7 +108,7 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col md={6} className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="gender"></input>
               </Col>
             </Row>
             <Row>
@@ -97,7 +116,7 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col md={6} className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="email"></input>
               </Col>
             </Row>
             <Row>
@@ -105,7 +124,7 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col md={6} className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="tel"></input>
               </Col>
             </Row>
             <Row>
@@ -113,7 +132,7 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col className={classes.box}>
-                <input className={classes.input}></input>
+                <input className={classes.input} onChange={handleChange} name="address"></input>
               </Col>
             </Row>
             <div className={classes.register}> 
@@ -121,8 +140,10 @@ const RegisterPage = () => {
                     ลงทะเบียน
                 </button>
             </div>
-          </from>
+          </form>
         </Container>
+
+        
       </div>
     </div>
   );
@@ -130,7 +151,27 @@ const RegisterPage = () => {
   function clickLogo(){
     window.location = "/";
   }
+
+  function setBirthday(newValue) {
+    console.log(newValue);
+    setValue(newValue);
+
+    setData(prevState => ({
+      ...prevState,
+      birthday: newValue
+    }));
+  }
+
+  async function onSubmit(event){
+    event.preventDefault();
+    console.log(data);
+    if(data.password == data.confirmPassword){
+      userService.register(data);
+    }
+  }
 };
+
+
 const useStyles = makeStyles({
   container: {
     display: 'flex',
@@ -197,7 +238,7 @@ const useStyles = makeStyles({
   register:{
       display: 'flex',
       justifyContent: 'flex-end',
-  }
+  },
 });
 
 export default RegisterPage;
