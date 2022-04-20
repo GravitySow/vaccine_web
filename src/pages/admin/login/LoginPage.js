@@ -27,6 +27,7 @@ function LoginPage() {
       if (!response.data.staff) {
         setloginstatus("Username or Password worng");
       } else {
+        localStorage.setItem("hospitalId", response.data.hospitalId);
         console.log('Suscess:',response.data[0]);
         window.location = '/staff/dashboard'
       }

@@ -133,9 +133,8 @@ function DashboardPage() {
 
   const UserRead = () => {
     Axios.post("http://gravitys.ddns.net:8081/staff/getvaccinereserve", {
-      hospitalId: 1
+      hospitalId: Number(localStorage.getItem("hospitalId"))
     }).then((response) => {
-      console.log(response)
       setUserList(response.data);
     });
   }

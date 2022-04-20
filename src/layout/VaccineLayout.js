@@ -8,7 +8,7 @@ export class Vaccinelayout extends React.Component {
         return (
             <div className={classes.container}>
                 <div className={classes.logo}>
-                    <img src={logo} height="75vh" onClick={clickLogo}/>
+                    <img src={logo} height="75vh" onClick={clickLogo} className={classes.click}/>
                 </div>
                 <Outlet />
             </div>
@@ -20,7 +20,7 @@ export class Vaccinelayout extends React.Component {
     
 }
 const useStyles = (theme) => ({
-    container: {   
+    container: { 
         width: '100vw',
         minHeight: '100vh',
         height: 'auto',
@@ -33,7 +33,10 @@ const useStyles = (theme) => ({
         display: 'flex',
         justifyContent: 'center',
         zIndex: '2',
-        cursor: 'pointer',
+        marginTop: '10px',
     },
+    click: {
+        cursor: 'pointer',
+    }
 })
 export default withStyles(useStyles)(Vaccinelayout);

@@ -6,13 +6,25 @@ const client = axios.create({
 export class UserService {
    
     getVaccine(data) {
-        return client.post("getvaccinereserve",{userId: 1});
+        return client.post("getvaccinereserve",{userId: data});
     }
     login(data){
         return client.post("login",data);
     }
     register(data){
         return client.post("register",data);
+    }
+    getCovidVaccine(){
+        return client.post("getcovidvaccine");
+    }
+    getOtherVaccine(){
+        return client.post("getothervaccine");
+    }
+    getHospital(){
+        return client.post("gethospital");
+    }
+    reserveVaccine(data){
+        return client.post("reservevaccine", data);
     }
 }
 const userService = new UserService();

@@ -43,8 +43,8 @@ const LoginPage  = () => {
             password: password
         }
         const response = await userService.login(data)
-        console.log(response);
         if(response.data.status == true){
+            localStorage.setItem("userId", response.data.userId);
             window.location = "/dashboard";
         }
     }

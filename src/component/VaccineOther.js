@@ -12,18 +12,17 @@ import Select, { StylesConfig } from 'react-select';
 import chroma from 'chroma-js';
 import userService from '../service/userService';
 
-const VaccineDialog  = (props) => {
+const VaccineOther  = (props) => {
     const classes = useStyles();
     const { onClose, selectedValue, open } = props;
     const [value, setValue] = React.useState(null);
     const [locale, setLocale] = React.useState('th');
     const [vaccine, setVaccine] = useState({});
-    const [hospital, setHospital] = useState({});
     const [data, setData] = useState({
         userId: Number(localStorage.getItem("userId")),
         vaccineCount: 0,
+        hospitalId: 0,
         vaccineId: "",
-        hospitalId: "",
         date: ""
       });
     const localeMap = {
@@ -38,24 +37,10 @@ const VaccineDialog  = (props) => {
     useEffect( () => {
         setAPI()
     }, []);
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setData(prevState => ({
-            ...prevState,
-            [name]: Number(value)
-        }));
-        console.log(data);
-    };
     const handleChangeVaccineId = e => {
         setData(prevState => ({
             ...prevState,
             vaccineId: e.value
-        }));
-    };
-    const handleChangeHospitalId = e => {
-        setData(prevState => ({
-            ...prevState,
-            hospitalId: e.value
         }));
     };
 
@@ -65,13 +50,7 @@ const VaccineDialog  = (props) => {
             <div className={classes.container}>
                 <div className={classes.block}>
                     <div className={classes.topic}>
-                        เข็มที่ 
-                    </div>
-                    <input name="vaccineCount" onChange={handleChange} className={classes.inputN}/>
-                </div>
-                <div className={classes.block}>
-                    <div className={classes.topic}>
-                        วัคซีนที่ต้องการ
+                        ชื่อวัคซีนที่ได้รับมา
                     </div>
                     <Select
                         onChange={handleChangeVaccineId}
@@ -94,32 +73,8 @@ const VaccineDialog  = (props) => {
                     />
                 </div>
                 <div className={classes.block}>
-                <div className={classes.topic}>
-                    สถานที่สะดวกรับวัคซีน
-                </div>
-                <Select 
-                    onChange={handleChangeHospitalId}
-                    options={hospital}
-                    styles={{
-                        menuPortal: (base) => ({
-                            ...base,
-                            zIndex: '9999',
-                        }),
-                        control: (base) => ({ 
-                            ...base,
-                            width: '50%',
-                            border: '1px solid #C2C2C2',
-                            boxSizing: 'border-box',
-                            borderRadius: '50px',
-                            padding: '0px 10px',
-                        }),
-                    }}
-                    menuPortalTarget={document.body}
-                />
-                </div>
-                <div className={classes.block}>
                     <div className={classes.topic}>
-                        วันที่สะดวกรับวัคซีน
+                        วันที่ได้รับวัคซีน
                     </div>
                     <LocalizationProvider
                     dateAdapter={AdapterDateFns}
@@ -162,16 +117,11 @@ const VaccineDialog  = (props) => {
             }));
         }
         async function setAPI(){
-            const response = await userService.getCovidVaccine();
+            const response = await userService.getOtherVaccine();
             let o = response.data.map(function (data) {
                 return { value: data.id, label: data.name };
             })
             setVaccine(response.data.map(function (data) {
-                return { value: data.id, label: data.name };
-            }));
-            
-            const response2 = await userService.getHospital();
-            setHospital(response2.data.map(function (data) {
                 return { value: data.id, label: data.name };
             }));
         }
@@ -183,7 +133,6 @@ const VaccineDialog  = (props) => {
             }
         }
 }
-
 const useStyles = makeStyles({
     container: {
         padding: '0px 30px 20px 35px',
@@ -254,9 +203,9 @@ const useStyles = makeStyles({
 })
 
 
-VaccineDialog.propTypes = {
+VaccineOther.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
-export default VaccineDialog;
+export default VaccineOther;

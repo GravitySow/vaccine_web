@@ -1,25 +1,32 @@
 import React, { useState,useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../../../assets/icon/logo.svg'
-import userService from '../../../service/userService';
+ import userService from '../../../service/userService';
 import * as ReactDOM from 'react-dom';
-import SimpleDialog from '../../../component/SimpleDialog';
+import VaccineDialog from '../../../component/VaccineDialog';
 import Button from '@mui/material/Button';
+import Moment from 'moment';
+import VaccineOther from '../../../component/VaccineOther';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 const DashboardPage  = () => {
     const classes = useStyles();
     const [data, setData] = useState([]);
     const [open, setOpen] = React.useState(false);
+    const [openOther, setOpenOther] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
-        console.log("open");
     };
 
     const handleClose = (value) => {
         setOpen(false);
-        console.log("close");
+        test();
+    };
+    const handleClickOpenOther = () => {
+        setOpenOther(true);
+    };
+    const handleCloseOther = (value) => {
+        setOpenOther(false);
         test();
     };
     useEffect( () => {
@@ -29,36 +36,60 @@ const DashboardPage  = () => {
     return (
         <div className={classes.container}>
             {data.map((item, index) => {
-                return(
-                    <div className={classes.boxVaccine}>
-                        <div className={classes.text}>
-                            <span className={classes.font}>วัคซีนเข็มที่ {item.vaccineCount} </span><br />
-                            <span className={classes.font2}>ชื่อวัคซีน</span> {item.vaccine.name} <br />
-                            <span className={classes.font2}>วันที่จองวัตซีน</span> {item.createDate}<br />
-                            <span className={classes.font2}>สถานที่</span> {item.hospital.name}<br />
-                            <span className={classes.font2}>วันที่ได้รับวัคซีน</span> {item.date} <br />
+                if(item.vaccine.vaccine === "covid-19"){
+                    return(
+                        <div className={classes.boxVaccine}>
+                            <div className={classes.text}>
+                                <span className={classes.font}>วัคซีนเข็มที่ {item.vaccineCount} </span><br />
+                                <span className={classes.font2}>ชื่อวัคซีน</span> {item.vaccine.name} <br />
+                                <span className={classes.font2}>วันที่จองวัตซีน</span> {Moment(item.createDate).format("DD/MM/YYYY")}<br />
+                                <span className={classes.font2}>สถานที่</span> {item.hospital.name}<br />
+                                <span className={classes.font2}>วันที่ได้รับวัคซีน</span> {Moment(item.date).format("DD/MM/YYYY")} <br />
+                                <span className={classes.font2}>สถานะ</span><span
+                                    align="center"
+                                    style={{
+                                        color:
+                                        (item.status === "ได้รับวัคซีนแล้ว" &&
+                                            "#09CF9E") ||
+                                        (item.status === "ยังไม่ได้รับวัคซีน" &&
+                                            "#E8302A"),
+                                    }}
+                                    >
+                                    {item.status}
+                                    </span>
+                                </div>
                         </div>
-                    </div>
-                );
+                    );
+                }else{
+                    return(
+                        <div className={classes.boxVaccine}>
+                            <div className={classes.text}>
+                                <span className={classes.font}>วัคซีนเข็มอื่นๆ</span><br />
+                                <span className={classes.font2}>ชื่อวัคซีน</span> {item.vaccine.name} <br />
+                                <span className={classes.font2}>วันที่ได้รับวัตซีน</span> {Moment(item.date).format("DD/MM/YYYY")}<br />
+                                </div>
+                        </div>
+                    );
+                }
             })}
             <div className={classes.groupButton}>
-                <div className={classes.button}>วัคซีนโควิด-19</div>
+                <div className={classes.button} onClick={handleClickOpen}>วัคซีนโควิด-19</div>
+                <div className={classes.button} onClick={handleClickOpenOther}>วัคซีนชนิดอื่นๆ</div>
             </div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open simple dialog
-            </Button>
-            <SimpleDialog
+
+            <VaccineDialog
                 open={open}
                 onClose={handleClose}
-                // maxWidth="xl"
-                // fullWidth="true"
+            />
+            <VaccineOther
+                open={openOther}
+                onClose={handleCloseOther}
             />
         </div>
     )
     
     async function test(){
-        const response = await userService.getVaccine(1);
-        // console.log(response);
+        const response = await userService.getVaccine(Number(localStorage.getItem("userId")));
         setData(response.data)
     }
 }
@@ -68,7 +99,7 @@ const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '5vh',
+        padding: '2vh',
         flexDirection: 'column',
     },
     boxVaccine: {
@@ -80,7 +111,7 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        marginTop: '20px',
+        marginTop: '10px',
         color: '#000000',
         textAlign: 'left',
         lineHeight: '33px',
@@ -112,7 +143,7 @@ const useStyles = makeStyles({
         lineHeight: '21px',
         color: 'white',
         borderStyle: 'unset',   
-        
+        marginLeft: '10px',
         '&:hover': {
             background: '#5E5BD8',
         }
