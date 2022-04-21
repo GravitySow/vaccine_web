@@ -19,6 +19,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Moment from 'moment';
 // import "./LoginHospital.js"; 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -86,6 +87,8 @@ function DashboardPage() {
   const [query, setQuery] = useState("");
   const [RowData, setRowData] = useState([]);
   const [RowData2, setRowData2] = useState([]);
+  const [RowData3, setRowData3] = useState([]);
+  const [RowData4, setRowData4] = useState([]);
   const [newStatus, setNewStatus] = useState("");
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem('hospitalID'));
@@ -98,24 +101,33 @@ function DashboardPage() {
   };
 
   const handleUpDate = (ID) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    // var myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
     
-    var raw = JSON.stringify({
-      ID: ID
+    // var raw = JSON.stringify({
+    //   id: ID
+    // });
+    
+    // var requestOptions = {
+    //   method: 'POST',
+    //   headers: myHeaders,
+    //   body: raw,
+    //   redirect: 'follow'
+    // };
+    
+    // fetch("http://localhost:3301/checkvaccine", requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => console.log(result))
+    //   .then(() =>UserRead())
+    //   .catch(error => console.log('error', error));
+
+    Axios.post("http://gravitys.ddns.net:8081/staff/checkvaccine", {
+      id: Number(ID)
+    }).then((response) => {
+      console.log(response.data);
+      UserRead();
+      handleClose();
     });
-    
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-    
-    fetch("http://localhost:3301/update", requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
   };
 
   
@@ -135,6 +147,7 @@ function DashboardPage() {
     Axios.post("http://gravitys.ddns.net:8081/staff/getvaccinereserve", {
       hospitalId: Number(localStorage.getItem("hospitalId"))
     }).then((response) => {
+      console.log(response.data)
       setUserList(response.data);
     });
   }
@@ -172,7 +185,7 @@ function DashboardPage() {
                     <b>สถานะ</b>
                   </StyledTableCell>
                   <StyledTableCell align="center" style={{fontFamily: 'Prompt, sans-serif',}}> 
-                    <b>วัน/เดือน/ปี</b>
+                    <b>วัน/เดือน/ปี </b>
                   </StyledTableCell>
                   <StyledTableCell align="center" style={{fontFamily: 'Prompt, sans-serif',}}>
                     <b>ชื่อ-นามสกุล</b>
@@ -206,7 +219,7 @@ function DashboardPage() {
                     >
                       {row.status}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{row.date}</StyledTableCell>
+                    <StyledTableCell align="center">{Moment(row.date).format("DD/MM/YYYY")}</StyledTableCell> 
                     <StyledTableCell component="th" scope="row">
                       {row.users.firstname} {row.users.surname}
                     </StyledTableCell>
@@ -226,6 +239,8 @@ function DashboardPage() {
                         onClick={() => {
                           handleClickOpen(setRowData(row.users)); 
                           handleClickOpen(setRowData2(row.vaccine));
+                          handleClickOpen(setRowData3(row.hospital));
+                          handleClickOpen(setRowData4(row)); 
                         }}
                       >
                         รายละเอียด
@@ -265,7 +280,7 @@ function DashboardPage() {
                     <b>เพศ</b> &nbsp; &nbsp; &nbsp;{RowData.gender}
                   </lable>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                   <lable>
-                    <b>วัน/เดือน/ปีเกิด</b> {RowData.birthday}
+                    <b>วัน/เดือน/ปีเกิด</b> {Moment(RowData.birthday).format("DD/MM/YYYY")}
                   </lable>
                 </form>
                 <br></br>
@@ -304,13 +319,13 @@ function DashboardPage() {
               </lable>
               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
               <lable>
-                <b>เข็มที่</b> &nbsp; &nbsp; &nbsp;{RowData2.DoseNumber}
+                <b>เข็มที่</b> &nbsp; &nbsp; &nbsp;{RowData4.vaccineCount}
               </lable>
             </form>
             <br></br>
             <form>
               <lable>
-                <b>โรงพยาบาล</b>&nbsp; &nbsp; &nbsp; {RowData2.hospitalId}
+                <b>โรงพยาบาล</b>&nbsp; &nbsp; &nbsp; {RowData3.name}
               </lable>
             </form>
           </DialogContent>
@@ -319,7 +334,7 @@ function DashboardPage() {
             style={{fontFamily: 'Prompt, sans-serif',}}
               autoFocus
               onClick={() => {
-                handleUpDate(RowData.id);
+                handleUpDate(RowData4.id);
               } 
             }
             >
