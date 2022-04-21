@@ -45,7 +45,6 @@ export class Vaccinelayout extends React.Component {
             </div>
         )
         function clickLogo(){
-            window.location = "/";
         }
         function logout(){
             localStorage.clear();
@@ -79,7 +78,7 @@ const useStyles = (theme) => ({
         alignItems: 'center',
         justifyContent: 'flex-end',
         right: '0',
-        marginRight: '10px',
+        marginRight: '7vw',
         marginTop: '15px',
     },
     dropdown: {
