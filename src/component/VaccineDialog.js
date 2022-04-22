@@ -130,7 +130,7 @@ const VaccineDialog  = (props) => {
                         label="Custom input"
                         mask="__/__/____"
                         value={value}
-                        
+                        minDate={new Date()}
                         onChange={setDay}
                         renderInput={({inputRef, inputProps, InputProps}) => (
                         <Box sx={{display: 'flex', alignItems: 'center'}}>

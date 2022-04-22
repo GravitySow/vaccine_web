@@ -89,7 +89,7 @@ const RegisterPage = () => {
                     label="Custom input"
                     mask="__/__/____"
                     value={value}
-                    
+                    minDate={new Date()}
                     onChange={setBirthday}
                     renderInput={({inputRef, inputProps, InputProps}) => (
                       <Box sx={{display: 'flex', alignItems: 'center'}}>

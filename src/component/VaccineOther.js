@@ -85,7 +85,7 @@ const VaccineOther  = (props) => {
                         label="Custom input"
                         mask="__/__/____"
                         value={value}
-                        
+                        maxDate={new Date()}
                         onChange={setDay}
                         renderInput={({inputRef, inputProps, InputProps}) => (
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
