@@ -73,7 +73,7 @@ const DashboardPage  = () => {
                     );
                 }
             })}
-             <div className={classes.boxVaccine}> <span className={classes.font} style={{color: '#FE0000'}}>เข็มถัดไปควรฉีด </span>
+             <div className={classes.boxVaccine} style={{display:(data.length === 0 &&"none")}}> <span className={classes.font} style={{color: '#FE0000'}}>เข็มถัดไปควรฉีด </span>
                 {vaccine.map((item, index) => {
                     var result = new Date(date);
                     result.setDate(result.getDate() + item.day);
