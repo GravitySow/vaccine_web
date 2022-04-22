@@ -6,7 +6,7 @@ import VaccineDialog from '../../../component/VaccineDialog';
 import Button from '@mui/material/Button';
 import Moment from 'moment';
 import VaccineOther from '../../../component/VaccineOther';
-
+import { Navigate,Outlet } from "react-router-dom";
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 const DashboardPage  = () => {
     const classes = useStyles();
