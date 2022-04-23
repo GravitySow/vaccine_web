@@ -61,7 +61,7 @@ const RegisterPage = () => {
             </Row>
             <Row>
               <Col md={6} className={classes.box}>
-                <input className={classes.input} onChange={handleChange} name="idcardno"></input>
+                <input className={classes.input} onChange={handleChange} name="idcardno" maxLength="13"></input>
               </Col>
             </Row>
             <Row>
